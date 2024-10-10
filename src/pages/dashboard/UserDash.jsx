@@ -58,7 +58,7 @@ function UserDash() {
     setSearchTerm(e.target.value);
   };
 
-  const handleRowClick = (businessId) => {
+  const handleClick = (businessId) => {
     setSelectedBusinessId(businessId);
     setIsModalOpen(true);
   };
@@ -86,7 +86,7 @@ function UserDash() {
                 <Card
                   key={business._id}
                   business={business}
-                  onClick={handleRowClick}
+                  onClick={handleClick}
                 />
               ))}
             </div>

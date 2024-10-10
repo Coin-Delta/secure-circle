@@ -31,7 +31,7 @@ function Header() {
     if (!token) {
       setIsAuth(false);
     }
-  }, []);
+  }, [accessTokenCookieName]);
   const user = JSON.parse(localStorage.getItem("user"));
   const location = useLocation();
   return (

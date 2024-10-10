@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import { getUserById } from '@/services/user';
-import { LoaderIcon, ExternalLink } from 'lucide-react';
-import { QRCodeSVG } from 'qrcode.react';
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { getUserById } from "@/services/user";
+import { LoaderIcon, ExternalLink } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 
 const BusinessDetailsModal = ({ isOpen, onClose, businessId }) => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const BusinessDetailsModal = ({ isOpen, onClose, businessId }) => {
         setBusinessData(res);
       }
     } catch (error) {
-      toast.error('Failed to fetch business details');
+      toast.error("Failed to fetch business details");
     } finally {
       setLoading(false);
     }
@@ -36,8 +36,8 @@ const BusinessDetailsModal = ({ isOpen, onClose, businessId }) => {
     <div
       className="fixed inset-0 z-50 flex justify-center items-center"
       style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        backdropFilter: 'blur(10px)',
+        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        backdropFilter: "blur(10px)",
       }}
     >
       <div className="bg-white w-11/12 p-[30px] md:max-w-3xl mx-auto rounded-3xl shadow-lg z-50 overflow-y-auto">
@@ -57,27 +57,27 @@ const BusinessDetailsModal = ({ isOpen, onClose, businessId }) => {
 
               <div>
                 <h4 className="font-semibold">Business Name</h4>
-                <p>{businessData?.businessName || 'N/A'}</p>
+                <p>{businessData?.businessName || "N/A"}</p>
               </div>
 
               <div>
                 <h4 className="font-semibold">Owner</h4>
                 <p>
-                  {`${businessData?.firstName || ''} ${
-                    businessData?.lastName || ''
-                  }`.trim() || 'N/A'}
+                  {`${businessData?.firstName || ""} ${
+                    businessData?.lastName || ""
+                  }`.trim() || "N/A"}
                 </p>
               </div>
 
               <div>
                 <h4 className="font-semibold">Email</h4>
-                <p>{businessData?.email || 'N/A'}</p>
+                <p>{businessData?.email || "N/A"}</p>
               </div>
 
               <div>
                 <h4 className="font-semibold">Wallet Address</h4>
                 <p className="break-all">
-                  {businessData?.walletAddress || 'N/A'}
+                  {businessData?.walletAddress || "N/A"}
                 </p>
               </div>
 
@@ -109,6 +109,15 @@ const BusinessDetailsModal = ({ isOpen, onClose, businessId }) => {
             </div>
 
             <div className="w-full md:w-1/2 flex flex-col items-center justify-center mt-8 md:mt-0">
+              {businessData?.businessLogo && (
+                <div className="mb-4">
+                  <img
+                    src={businessData.businessLogo}
+                    alt="Business Logo"
+                    className="w-32 h-32 object-contain"
+                  />
+                </div>
+              )}
               <h4 className="font-semibold mb-4">Wallet QR Code</h4>
               {businessData?.walletAddress ? (
                 <QRCodeSVG value={businessData.walletAddress} size={200} />

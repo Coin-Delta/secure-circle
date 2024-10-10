@@ -52,6 +52,8 @@ function MobileHeader() {
       setSelect("sign-up");
     } else if (location.pathname === "/business-profile") {
       setSelect("business-profile");
+    } else if (location.pathname === "/update-profile") {
+      setSelect("business-profile");
     } else {
       setSelect("verified Businesses");
     }
