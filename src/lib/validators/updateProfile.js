@@ -1,10 +1,16 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const UpdateProfileSchema = z.object({
-  firstName: z.string().min(1, { message: 'Title is required.' }),
-  lastName: z.string().min(1, { message: 'Title is required.' }),
-  businessName: z.string().min(1, { message: 'Title is required.' }),
+  firstName: z.string().min(1, { message: "Title is required." }),
+  lastName: z.string().min(1, { message: "Title is required." }),
+  businessName: z.string().min(1, { message: "Title is required." }),
   walletAddress: z.string().optional(),
+  businessLogo: z
+    .union([
+      z.string(), // Accepts a string
+      z.instanceof(File).optional(), // Accepts an object, can be empty
+    ])
+    .optional(), // Accepts an object, can be empty
   files: z
     .object({
       identification: z

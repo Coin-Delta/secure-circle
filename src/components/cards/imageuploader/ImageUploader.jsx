@@ -1,78 +1,63 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import propType from "prop-types";
 
 const ImageUploader = ({ field }) => {
-  const [previewMedia, setPreviewMedia] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
-  const handleMediaUpload = e => {
+  const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    const newMedia = [...(field.value || []), ...files]; // Ensure field.value is defined
+    const newImages = files[0];
 
-    if (newMedia.length > 4) {
-      alert('You can upload up to 4 media files.');
+    if (newImages.length > 4) {
+      alert("You can upload up to 4 images.");
     } else {
-      field.onChange(newMedia);
-      setPreviewMedia(files[0]); // Set the preview to the newly uploaded file
+      field.onChange(newImages);
+      setPreviewImage(newImages);
     }
+    e.target.value = "";
   };
 
-  const handleRemoveMedia = index => {
-    const newMedia = (field?.value || []).filter((_, i) => i !== index);
-    field.onChange(newMedia);
-    if (index === 0) setPreviewMedia(null); // Clear the preview if the first item is removed
+  const handleRemoveImage = () => {
+    field.onChange("");
+    setPreviewImage(null);
   };
 
-  const getMediaSrc = media => {
-    if (typeof media === 'string') {
-      return media;
+  const getImageSrc = (image) => {
+    if (typeof image === "string") {
+      return image;
     }
-    return URL?.createObjectURL(media);
+    return URL?.createObjectURL(image);
   };
-
-  const hasMedia = previewMedia || (field?.value && field.value.length > 0);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full">
-      <div className="relative w-full h-48 border border-border rounded-3xl flex items-center justify-center p-1">
-        {hasMedia ? (
+    <div className="flex flex-col items-center justify-center w-full ">
+      <div className=" relative w-full h-48 border border-border  rounded-3xl flex items-center justify-center p-1">
+        {previewImage || field?.value ? (
           <>
             <div className="relative">
-              {previewMedia?.type?.startsWith('video') ||
-              (field?.value[0]?.type?.startsWith('video') ?? false) ? (
-                <video
-                  src={
-                    previewMedia
-                      ? getMediaSrc(previewMedia)
-                      : getMediaSrc(field?.value[0])
-                  }
-                  controls
-                  className="w-full h-48 object-contain"
-                />
-              ) : (
-                <img
-                  src={
-                    previewMedia
-                      ? getMediaSrc(previewMedia)
-                      : getMediaSrc(field?.value[0])
-                  }
-                  alt="Preview"
-                  className="w-full h-48 object-contain"
-                />
-              )}
+              <img
+                src={
+                  previewImage
+                    ? getImageSrc(previewImage)
+                    : getImageSrc(field?.value)
+                }
+                alt="Preview"
+                className="w-full h-48 object-contain"
+              />
             </div>
             <button
               className="absolute top-3 right-3 bg-red-500 text-white rounded-full text-xs px-2 p-1"
               type="button"
-              onClick={() => handleRemoveMedia(0)}
+              onClick={() => handleRemoveImage()}
             >
               X
             </button>
           </>
         ) : (
-          <div className="w-full h-full flex justify-center items-center rounded-lg">
+          <div className=" w-full h-full flex justify-center items-center rounded-lg">
             <label
-              htmlFor="media-upload"
-              className="flex justify-center my-3 cursor-pointer py-3 px-6 border-primary border text-primary rounded-lg hover:bg-primary hover:text-primary-foreground"
+              htmlFor="image-upload"
+              className=" flex justify-center my-3 cursor-pointer py-3 px-6 border-primary border text-primary rounded-lg hover:bg-primary hover:text-primary-foreground"
             >
               Upload
             </label>
@@ -81,11 +66,11 @@ const ImageUploader = ({ field }) => {
       </div>
       <input
         type="file"
-        accept="image/*, video/*"
+        accept="image/*"
         multiple={false}
-        onChange={handleMediaUpload}
+        onChange={handleImageUpload}
         className="hidden"
-        id="media-upload"
+        id="image-upload"
       />
     </div>
   );
@@ -94,5 +79,5 @@ const ImageUploader = ({ field }) => {
 export default ImageUploader;
 
 ImageUploader.propTypes = {
-  field: PropTypes.object.isRequired,
+  field: propType.object,
 };

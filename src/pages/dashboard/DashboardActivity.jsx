@@ -1,18 +1,18 @@
-import { useState, useCallback, useEffect } from 'react';
-import CustomTable from '@/components/customtable/CustomTable';
-import Pagination from '@/components/pagination/Pagination';
-import SearchBar from '@/components/searchbar/SeachBar';
+import { useState, useCallback, useEffect } from "react";
+import CustomTable from "@/components/customtable/CustomTable";
+import Pagination from "@/components/pagination/Pagination";
+import SearchBar from "@/components/searchbar/SeachBar";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import propTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
-import VerificationModel from '@/components/model/VerificationModel';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/select";
+import propTypes from "prop-types";
+import { useLocation } from "react-router-dom";
+import VerificationModel from "@/components/model/VerificationModel";
+import { Button } from "@/components/ui/button";
 
 function DashboardActivity({
   currentPage,
@@ -28,69 +28,69 @@ function DashboardActivity({
   const location = useLocation();
   const { pathname } = location;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState('');
+  const [selectedId, setSelectedId] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState(data);
 
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
-    setRefreshKey(prevKey => prevKey + 1);
+    setRefreshKey((prevKey) => prevKey + 1);
     refreshData();
   }, [refreshData]);
 
   useEffect(() => {
-    const filtered = data.filter(item =>
+    const filtered = data.filter((item) =>
       Object.values(item).some(
-        value =>
+        (value) =>
           value &&
-          value.toString().toLowerCase().includes(searchTerm.toLowerCase()),
-      ),
+          value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
     );
     setFilteredData(filtered);
   }, [data, searchTerm]);
 
-  const handleSearch = e => {
+  const handleSearch = (e) => {
     setSearchTerm(e.target.value);
     setQuery(e.target.value);
   };
 
-  const handleRowClick = id => {
+  const handleRowClick = (id) => {
     setSelectedId(id);
     setIsModalOpen(true);
   };
 
   const headers =
-    pathname === '/'
+    pathname === "/"
       ? [
           {
-            key: 'businessName',
-            label: 'Business Name',
-            className: 'rounded-l-xl',
+            key: "businessName",
+            label: "Business Name",
+            className: "rounded-l-xl",
           },
           {
-            key: 'email',
-            label: 'Email',
-            className: '',
-            render: email => (email ? email : '-'),
+            key: "email",
+            label: "Email",
+            className: "",
+            render: (email) => (email ? email : "-"),
           },
           {
-            key: 'walletAddress',
-            label: 'Wallet Address',
-            render: address =>
+            key: "walletAddress",
+            label: "Wallet Address",
+            render: (address) =>
               address && `${address.slice(0, 6)}....${address.slice(-4)}`,
           },
-          { key: 'firstName', label: 'Owner' },
+          { key: "firstName", label: "Owner" },
           {
-            key: 'isEmailVerified',
-            label: 'Email Verified',
-            render: isEmailVerified => (isEmailVerified ? 'Yes' : 'No'),
+            key: "isEmailVerified",
+            label: "Email Verified",
+            render: (isEmailVerified) => (isEmailVerified ? "Yes" : "No"),
           },
           {
-            key: 'isVerified',
-            label: 'KYC Verified',
-            className: 'rounded-r-xl',
-            render: isVerified => (isVerified ? 'Yes' : 'No'),
+            key: "isVerified",
+            label: "KYC Verified",
+            className: "rounded-r-xl",
+            render: (isVerified) => (isVerified ? "Yes" : "No"),
           },
         ]
       : [];
@@ -109,9 +109,9 @@ function DashboardActivity({
         <div className="bg-white drop-shadow-md rounded-xl p-5 mt-10 flex justify-between flex-col">
           <div className="flex w-full justify-between md:flex-row flex-col">
             <h1 className="text-3xl text-black md:mb-10 mb-5">
-              {pathname === '/' && 'Businesses'}
+              {pathname === "/" && "Businesses"}
             </h1>
-            <div className="flex justify-evenly items-center w-1/2">
+            <div className="flex justify-evenly items-center w-1/2 gap-2">
               <Select onValueChange={setFilter} defaultValue={filter}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Filter by" />
@@ -124,7 +124,7 @@ function DashboardActivity({
               </Select>
               <Button
                 onClick={() => {
-                  setRefreshKey(prevKey => prevKey + 1);
+                  setRefreshKey((prevKey) => prevKey + 1);
                   refreshData();
                 }}
               >
@@ -132,7 +132,7 @@ function DashboardActivity({
               </Button>
               <SearchBar
                 onChange={handleSearch}
-                placeholder="Search by name, email or mobile"
+                placeholder="Search by name, email"
               />
             </div>
           </div>
@@ -141,7 +141,7 @@ function DashboardActivity({
               headers={headers}
               data={filteredData}
               loading={loading}
-              onRowClick={row => handleRowClick(row._id)}
+              onRowClick={(row) => handleRowClick(row._id)}
             />
             <Pagination
               currentPage={currentPage}
@@ -161,13 +161,6 @@ DashboardActivity.propTypes = {
   currentPage: propTypes.number,
   totalPages: propTypes.number,
   setCurrentPage: propTypes.func,
-  handleDelete: propTypes.func,
-  handleEdit: propTypes.func,
-  select: propTypes.string,
-  handleTabChange: propTypes.func,
-  updateUserData: propTypes.func,
-  setData: propTypes.func,
-  setTotalPages: propTypes.func,
   setQuery: propTypes.func,
   setFilter: propTypes.func,
   filter: propTypes.string,

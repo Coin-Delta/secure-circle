@@ -4,18 +4,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Coinlogo from "../../assets/images/dashboard/Coinlogo.jpg";
 import UserLogo from "../../assets/images/dashboard/User.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Cookies from "js-cookie";
 import { accessTokenCookieName } from "@/lib/constants";
 import MobileHeader from "./MobileHeader";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function Header() {
-  const navigate = useNavigate();
   const handleLogout = () => {
     Cookies.remove(accessTokenCookieName);
     window.location.href = "/";

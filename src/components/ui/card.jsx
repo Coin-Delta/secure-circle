@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Card = ({ business, onClick }) => (
   <div
-    className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center justify-between h-full cursor-pointer hover:shadow-lg transition-shadow"
+    className="bg-white rounded-lg border border-border shadow-md p-4 flex flex-col items-center justify-between h-full cursor-pointer hover:shadow-lg transition-shadow"
     onClick={() => onClick(business._id)}
   >
     {business.businessLogo ? (
@@ -18,7 +18,7 @@ const Card = ({ business, onClick }) => (
     <h3 className="text-sm font-medium text-center mb-2">
       {business.businessName}
     </h3>
-    <button className="text-sm text-white bg-gray-700 hover:bg-gray-800 py-1 px-3 rounded-md">
+    <button className="text-sm text-white bg-primary py-1 px-3 rounded-md">
       View more
     </button>
   </div>

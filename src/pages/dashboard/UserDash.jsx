@@ -65,8 +65,8 @@ function UserDash() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="bg-white drop-shadow-md rounded-xl p-5 mt-5 flex justify-between flex-col">
-        <div className="flex justify-between mb-4">
+      <div className="bg-white drop-shadow-md rounded-xl p-5 flex justify-between flex-col">
+        <div className="flex justify-between mb-4 border-b pb-4 border-primary">
           <h1 className="text-3xl text-black">Verified Businesses</h1>
           <SearchBar
             placeholder={"search for businesses"}
@@ -81,7 +81,7 @@ function UserDash() {
           <p className="text-red-500">{error}</p>
         ) : (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
               {filteredData.map((business) => (
                 <Card
                   key={business._id}

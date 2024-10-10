@@ -47,7 +47,7 @@ function SideBarUser() {
   const handleLogout = () => {
     Cookies.remove(accessTokenCookieName);
     setIsAuth(false);
-    navigate("/");
+    window.location.href = "/";
   };
 
   return (
@@ -120,7 +120,7 @@ function SideBarUser() {
           <div className="p-8">
             <button
               onClick={handleLogout}
-              className="p-6 rounded-xl cursor-pointer w-full bg-primary hover:bg-red-500 text-white hover:text-black flex items-center justify-center"
+              className={`p-6 rounded-xl cursor-pointer w-full text-[#748297] hover:text-white hover:bg-primary flex items-center`}
             >
               <LogOut />
               <span className="ml-3 text-base font-medium">Logout</span>

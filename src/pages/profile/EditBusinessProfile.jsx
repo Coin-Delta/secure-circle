@@ -5,37 +5,38 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
-import { LoaderIcon } from 'lucide-react';
-import { PencilLine } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { getUser, updateUser } from '@/services/user';
-import { UpdateProfileSchema } from '@/lib/validators/updateProfile';
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { LoaderIcon, PencilLine } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { getUser, updateUser } from "@/services/user";
+import { UpdateProfileSchema } from "@/lib/validators/updateProfile";
+import ImageUploader from "@/components/cards/imageuploader/ImageUploader";
 
 const EditBusinessProfile = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [loadingFormData, setLoadingFormData] = useState(false);
+  const [businessName, setBusinessName] = useState();
   const form = useForm({
     resolver: zodResolver(UpdateProfileSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      businessName: '',
+      firstName: "",
+      lastName: "",
+      businessName: "",
       files: {
-        identification: '',
-        businessLicense: '',
+        identification: "",
+        businessLicense: "",
       },
-      walletAddress: '',
+      walletAddress: "",
+      businessLogo: "",
     },
   });
-  console.log(form.getValues().files);
 
   const getUserDetails = async () => {
     setLoading(true);
@@ -46,19 +47,21 @@ const EditBusinessProfile = () => {
         setLoadingFormData(false);
 
         form.reset({
-          firstName: response.firstName || '',
-          lastName: response.lastName || '',
+          firstName: response?.firstName || "",
+          lastName: response?.lastName || "",
           files: {
-            identification: response.files?.identification || '', // URL for identification
-            businessLicense: response.files?.businessLicense || '', // URL for business license
+            identification: response?.files?.identification || "", // URL for identification
+            businessLicense: response?.files?.businessLicense || "", // URL for business license
           },
-          businessName: response.businessName,
-          walletAddress: response.walletAddress,
+          businessName: response?.businessName,
+          walletAddress: response?.walletAddress,
+          businessLogo: response?.businessLogo,
         });
+        setBusinessName(response?.businessName);
       }
     } catch (error) {
       console.error(error);
-      toast.error('Failed to fetch data');
+      toast.error("Failed to fetch data");
     } finally {
       setLoading(false);
     }
@@ -66,31 +69,31 @@ const EditBusinessProfile = () => {
   useEffect(() => {
     getUserDetails();
   }, []);
-  //   console.log(form.getValues().files);
 
-  console.log('form', form);
-
-  const handleUpdate = async data => {
+  const handleUpdate = async (data) => {
     setLoading(true);
     try {
-      console.log({ data });
-
       let formData = new FormData();
-      formData.append('firstName', data?.firstName);
+      formData.append("firstName", data?.firstName);
 
-      formData.append('lastName', data?.lastName);
-      formData.append('businessName', data?.businessName);
-      formData.append('walletAddress', data?.walletAddress);
-      formData.append('files[identification]', data?.files.identification);
-      formData.append('files[businessLicense]', data?.files.businessLicense);
-      console.log({ formData });
+      formData.append("lastName", data?.lastName);
+
+      if (businessName !== data?.businessName) {
+        formData.append("businessName", data?.businessName);
+      }
+      formData.append("walletAddress", data?.walletAddress);
+      if (typeof data?.businessLogo === "object") {
+        formData.append("businessLogo", data?.businessLogo);
+      }
+      formData.append("files[identification]", data?.files.identification);
+      formData.append("files[businessLicense]", data?.files.businessLicense);
 
       await updateUser(formData);
-      toast.success('Profile updated successfully');
+      toast.success("Profile updated successfully");
       resetForm();
-      navigate('/business-profile');
+      navigate("/business-profile");
     } catch (err) {
-      toast.error('Failed to update profile');
+      toast.error("Failed to update profile");
     } finally {
       setLoading(false);
     }
@@ -98,10 +101,9 @@ const EditBusinessProfile = () => {
 
   const resetForm = () => {
     form.reset();
-    // setIsConfirm(false);
   };
 
-  const handleSubmitForm = async formData => {
+  const handleSubmitForm = async (formData) => {
     handleUpdate(formData);
   };
 
@@ -126,47 +128,65 @@ const EditBusinessProfile = () => {
               <div className="border-b border-primary" />
               <div className=" md:px-3 max-sm:p-2 flex flex-col gap-3">
                 <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Firstname</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter first name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className=" gap-4">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Firstname</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter first name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Last Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter last name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter last name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="businessName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Business Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Enter business name"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="businessLogo"
+                      render={({ field, fieldState }) => (
+                        <FormItem className="w-full mt-2">
+                          <FormLabel>Logo</FormLabel>
+                          <ImageUploader field={field} />
+                          <FormMessage>{fieldState.error?.message}</FormMessage>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-                <FormField
-                  control={form.control}
-                  name="businessName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Business Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter business name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 <FormField
                   control={form.control}
                   name="walletAddress"
@@ -189,7 +209,7 @@ const EditBusinessProfile = () => {
                       <FormItem className="flex flex-col">
                         <FormLabel>Identification</FormLabel>
                         <FormLabel
-                          className={`border-dashed p-3 w-full ${field.value ? 'justify-between flex' : 'text-center'} items-center relative rounded-2xl border border-primary cursor-pointer text-primary`}
+                          className={`border-dashed p-3 w-full ${field.value ? "justify-between flex" : "text-center"} items-center relative rounded-2xl border border-primary cursor-pointer text-primary`}
                         >
                           {field?.value ? (
                             <>
@@ -205,14 +225,14 @@ const EditBusinessProfile = () => {
                               <PencilLine className="ms-auto" />
                             </>
                           ) : (
-                            'Choose File'
+                            "Choose File"
                           )}
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="file"
                             className="hidden"
-                            onChange={e => field.onChange(e.target.files[0])} // Use the first file directly
+                            onChange={(e) => field.onChange(e.target.files[0])} // Use the first file directly
                           />
                         </FormControl>
                         <FormMessage />
@@ -228,7 +248,7 @@ const EditBusinessProfile = () => {
                       <FormItem className="flex flex-col">
                         <FormLabel>Business License</FormLabel>
                         <FormLabel
-                          className={`border-dashed p-3 w-full ${field.value ? 'justify-between flex' : 'text-center'} items-center relative rounded-2xl border border-primary cursor-pointer text-primary`}
+                          className={`border-dashed p-3 w-full ${field.value ? "justify-between flex" : "text-center"} items-center relative rounded-2xl border border-primary cursor-pointer text-primary`}
                         >
                           {field?.value ? (
                             <>
@@ -244,14 +264,14 @@ const EditBusinessProfile = () => {
                               <PencilLine className="ms-auto" />
                             </>
                           ) : (
-                            'Choose File'
+                            "Choose File"
                           )}
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="file"
                             className="hidden"
-                            onChange={e => field.onChange(e.target.files[0])} // Use the first file directly
+                            onChange={(e) => field.onChange(e.target.files[0])} // Use the first file directly
                           />
                         </FormControl>
                         <FormMessage />
