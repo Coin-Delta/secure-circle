@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import { getUserById, verifyUser } from '@/services/user';
-import { LoaderIcon, Download } from 'lucide-react';
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { getUserById, verifyUser } from "@/services/user";
+import { LoaderIcon, Download } from "lucide-react";
 
 const VerificationModel = ({ isOpenModal, setIsOpenModal, ID, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [loadingFormData, setLoadingFormData] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isVerified, setVerified] = useState(false);
+
   const handleClose = () => {
     setIsOpenModal(false);
   };
@@ -23,7 +24,7 @@ const VerificationModel = ({ isOpenModal, setIsOpenModal, ID, onSuccess }) => {
         setVerified(res.isVerified);
       }
     } catch (error) {
-      toast.error('Failed to fetch user details');
+      toast.error("Failed to fetch user details");
     } finally {
       setLoadingFormData(false);
     }
@@ -31,21 +32,21 @@ const VerificationModel = ({ isOpenModal, setIsOpenModal, ID, onSuccess }) => {
 
   const handleVerify = async () => {
     setLoading(true);
-    const data = { isVerified: 'true' };
+    const data = { isVerified: "true" };
     try {
       await verifyUser(ID, data);
-      toast.success('User verified successfully');
+      toast.success("User verified successfully");
       onSuccess();
       handleClose();
     } catch (err) {
-      toast.error('Failed to verify user');
+      toast.error("Failed to verify user");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDownload = (fileUrl, fileName) => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = fileUrl;
     link.download = fileName;
     document.body.appendChild(link);
@@ -62,11 +63,11 @@ const VerificationModel = ({ isOpenModal, setIsOpenModal, ID, onSuccess }) => {
   return (
     <div
       className={`${
-        isOpenModal ? 'block' : 'hidden'
+        isOpenModal ? "block" : "hidden"
       } fixed inset-0 z-50 flex justify-center items-center`}
       style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        backdropFilter: 'blur(10px)',
+        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        backdropFilter: "blur(10px)",
       }}
     >
       <div className="bg-white w-11/12 p-[30px] md:max-w-2xl mx-auto rounded-3xl shadow-lg z-50 overflow-y-auto flex flex-col">
@@ -84,9 +85,20 @@ const VerificationModel = ({ isOpenModal, setIsOpenModal, ID, onSuccess }) => {
               </div>
               <div className="border-b border-primary" />
 
+              {/* Business Logo */}
+              {userData?.businessLogo && (
+                <div className="flex justify-center mb-4">
+                  <img
+                    src={userData.businessLogo}
+                    alt="Business Logo"
+                    className="w-32 h-32 object-contain"
+                  />
+                </div>
+              )}
+
               <div>
                 <h4 className="font-semibold">Business Name</h4>
-                <p>{userData?.businessName || 'N/A'}</p>
+                <p>{userData?.businessName || "N/A"}</p>
               </div>
 
               <div>
@@ -97,7 +109,7 @@ const VerificationModel = ({ isOpenModal, setIsOpenModal, ID, onSuccess }) => {
                     onClick={() =>
                       handleDownload(
                         userData.files.identification,
-                        'identification.pdf',
+                        "identification.pdf"
                       )
                     }
                     className="flex items-center gap-2"
@@ -118,7 +130,7 @@ const VerificationModel = ({ isOpenModal, setIsOpenModal, ID, onSuccess }) => {
                     onClick={() =>
                       handleDownload(
                         userData.files.businessLicense,
-                        'business_license.pdf',
+                        "business_license.pdf"
                       )
                     }
                     className="flex items-center gap-2"
@@ -146,7 +158,7 @@ const VerificationModel = ({ isOpenModal, setIsOpenModal, ID, onSuccess }) => {
                   onClick={handleVerify}
                   disabled={loading || isVerified}
                 >
-                  {loading ? <LoaderIcon className="animate-spin" /> : 'Verify'}
+                  {loading ? <LoaderIcon className="animate-spin" /> : "Verify"}
                 </Button>
               </div>
             </div>
