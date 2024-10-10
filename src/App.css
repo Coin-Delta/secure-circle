@@ -1,0 +1,33 @@
+.image-container {
+  position: relative;
+  background-image: url('./assets/images/authpage/bg-image.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+.containerImage {
+  position: relative;
+  margin-left: -12px;
+  margin-right: -12px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #042D53;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
