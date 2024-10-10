@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useNavigate } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 import {
   Form,
   FormControl,
@@ -8,16 +8,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { signInSchema } from '@/lib/validators/AuthPages';
-import EyeIcon from '@/assets/icons/eye-icon.svg';
-import HideEyeIcon from '@/assets/icons/eye-hide-icon.svg';
-import { useState } from 'react';
-import { login } from '../../../services/auth';
-import { useAppDispatch } from '../../../store';
-import { Link } from 'react-router-dom';
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { signInSchema } from "@/lib/validators/AuthPages";
+import EyeIcon from "@/assets/icons/eye-icon.svg";
+import HideEyeIcon from "@/assets/icons/eye-hide-icon.svg";
+import { useState } from "react";
+import { login } from "../../../services/auth";
+import { useAppDispatch } from "../../../store";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -27,8 +27,8 @@ function Login() {
   const form = useForm({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
   });
 
@@ -82,7 +82,7 @@ function Login() {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        type={isPasswordVisible ? 'text' : 'password'}
+                        type={isPasswordVisible ? "text" : "password"}
                         placeholder="Enter your Password"
                         {...field}
                         icon={
