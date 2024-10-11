@@ -6,6 +6,7 @@ import Pagination from "@/components/pagination/Pagination";
 import { LoaderIcon } from "lucide-react";
 import { getAllUser } from "@/services/user";
 import Card from "@/components/ui/card";
+import NoData from "@/assets/icons/no-data.svg";
 
 function UserDash() {
   const [data, setData] = useState([]);
@@ -81,15 +82,26 @@ function UserDash() {
           <p className="text-red-500">{error}</p>
         ) : (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-              {filteredData.map((business) => (
-                <Card
-                  key={business._id}
-                  business={business}
-                  onClick={handleClick}
+            {filteredData.length === 0 ? (
+              <div className="flex justify-center items-center w-full h-60">
+                <img
+                  src={NoData}
+                  className="object-contain h-full"
+                  alt="No data"
                 />
-              ))}
-            </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+                {filteredData.length !== 0 &&
+                  filteredData.map((business) => (
+                    <Card
+                      key={business._id}
+                      business={business}
+                      onClick={handleClick}
+                    />
+                  ))}
+              </div>
+            )}
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

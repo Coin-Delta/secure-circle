@@ -29,7 +29,7 @@ function SideBar() {
     <div className="w-full bg-[#fcfcfc] min-h-screen lg:block hidden">
       <div className="sticky top-0 w-full h-screen flex flex-col justify-between">
         <div>
-          <div className="bg-[#fcfcfc] min-h-[10vh] py-5 px-8 flex items-center">
+          <div className="bg-[#fcfcfc] min-h-[10vh] py-5 p-14 flex items-center">
             <Link to="/">
               <img
                 src={Coinlogo}
