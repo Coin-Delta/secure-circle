@@ -3,36 +3,34 @@ import {
   accessTokenCookieName,
   apiBaseUrl,
   ledgerBaseUrl,
-} from '@/lib/constants';
-import axios from 'axios';
-import cookies from 'js-cookie';
-import { toast } from 'sonner';
-import { handleLogout, refreshAccessToken } from './auth.js';
+} from "@/lib/constants";
+import axios from "axios";
+import cookies from "js-cookie";
+import { toast } from "sonner";
+import { handleLogout, refreshAccessToken } from "./auth.js";
 let retries = 0;
 
 export const Axios = axios.create({
   baseURL: apiBaseUrl,
 });
-export const LedgerAxios = axios.create({
-  baseURL: ledgerBaseUrl,
-});
-const getRequestConfig = config => {
+
+const getRequestConfig = (config) => {
   const token = cookies.get(accessTokenCookieName);
   if (token) {
     config.headers.Authorization = token;
   }
   return config;
 };
-const getRequestError = error => {
-  console.log('Request Error', error);
+const getRequestError = (error) => {
+  console.log("Request Error", error);
   return Promise.reject(error);
 };
-const getResponseError = async error => {
+const getResponseError = async (error) => {
   if (error.response) {
     // Request made and server responded
     switch (error.response.status) {
       case 400: {
-        console.log('Bad Request');
+        console.log("Bad Request");
         break;
       }
       case 401: {
@@ -49,27 +47,27 @@ const getResponseError = async error => {
       }
 
       case 403: {
-        console.log('Forbidden');
+        console.log("Forbidden");
         break;
       }
       case 404: {
-        console.log('Not Found');
+        console.log("Not Found");
         break;
       }
       case 500: {
-        console.log('Internal Server Error');
+        console.log("Internal Server Error");
         break;
       }
       case 502: {
-        console.log('Bad Gateway');
+        console.log("Bad Gateway");
         break;
       }
       case 503: {
-        console.log('Service Unavailable');
+        console.log("Service Unavailable");
         break;
       }
       case 504: {
-        console.log('Gateway Timeout');
+        console.log("Gateway Timeout");
         break;
       }
       default: {
@@ -78,24 +76,22 @@ const getResponseError = async error => {
     }
   } else if (error.request) {
     // The request was made but no response was received
-    console.log('Error Request :', error.request);
+    console.log("Error Request :", error.request);
   } else {
     // Something happened in setting up the request that triggered an Error
-    console.log('Error Message :', error.message);
+    console.log("Error Message :", error.message);
   }
   if (Array.isArray(error?.response?.data?.msg)) {
-    error.response.data.msg?.forEach(message => {
-      toast.error(`errors.${message.msg}` ?? 'Something went wrong!');
+    error.response.data.msg?.forEach((message) => {
+      toast.error(`errors.${message.msg}` ?? "Something went wrong!");
     });
   } else {
-    toast.error(`errors.${error?.message}` ?? 'Something went wrong!');
+    toast.error(`errors.${error?.message}` ?? "Something went wrong!");
   }
-  return Promise.reject(new Error(error?.message ?? 'Something went wrong!'));
+  return Promise.reject(new Error(error?.message ?? "Something went wrong!"));
 };
-const getResponseConfig = response => {
+const getResponseConfig = (response) => {
   return response.data;
 };
 Axios.interceptors.request.use(getRequestConfig, getRequestError);
 Axios.interceptors.response.use(getResponseConfig, getResponseError);
-LedgerAxios.interceptors.request.use(getRequestConfig, getRequestError);
-LedgerAxios.interceptors.response.use(getResponseConfig, getResponseError);

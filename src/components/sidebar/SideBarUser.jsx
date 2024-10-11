@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Cookies from "js-cookie";
 import { accessTokenCookieName } from "@/lib/constants";
+import { handleLogout } from "@/services/auth";
 
 function SideBarUser() {
   const [select, setSelect] = useState("verified Businesses");
@@ -43,12 +44,6 @@ function SideBarUser() {
       setSelect("verified Businesses");
     }
   }, [location]);
-
-  const handleLogout = () => {
-    Cookies.remove(accessTokenCookieName);
-    setIsAuth(false);
-    window.location.href = "/";
-  };
 
   return (
     <div className="w-full bg-[#fcfcfc] min-h-[100%] lg:block hidden">
@@ -119,7 +114,10 @@ function SideBarUser() {
         {isAuth && (
           <div className="p-8">
             <button
-              onClick={handleLogout}
+              onClick={() => {
+                setIsAuth(false);
+                handleLogout();
+              }}
               className={`p-6 rounded-xl cursor-pointer w-full text-[#748297] hover:text-white hover:bg-primary flex items-center`}
             >
               <LogOut />

@@ -135,7 +135,7 @@ const BusinessDetailsModal = ({ isOpen, onClose, businessId }) => {
 BusinessDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  businessId: PropTypes.string.isRequired,
+  businessId: PropTypes.string,
 };
 
 export default BusinessDetailsModal;
