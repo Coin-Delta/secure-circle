@@ -1,0 +1,52 @@
+.dashboard-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+
+  background-image: url('../../assets/images/dashboard/dashboard-banner.svg');
+}
+.dashboard-image1 {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../../assets/images/dashboard/Frame1.svg');
+}
+.dashboard-image2 {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../../assets/images/dashboard/Frame2.svg');
+}
+.dashboard-image3 {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../../assets/images/dashboard/Frame3.svg');
+}
+@media (max-width: 768px) {
+  .dashboard-image2,
+  .dashboard-image1,
+  .dashboard-image3 {
+    width: 100%;
+    height: auto;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .dashboard-image1,
+  .dashboard-image2,
+  .dashboard-image3 {
+    width: 100%;
+    height: auto;
+    background-size: cover;
+  }
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}
