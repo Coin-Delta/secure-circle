@@ -12,13 +12,9 @@ import Cookies from "js-cookie";
 import { accessTokenCookieName } from "@/lib/constants";
 import MobileHeader from "./MobileHeader";
 import { useState, useEffect } from "react";
+import { handleLogout } from "@/services/auth";
 
 function Header() {
-  const handleLogout = () => {
-    Cookies.remove(accessTokenCookieName);
-    window.location.href = "/";
-  };
-
   const [isAuth, setIsAuth] = useState(false);
   useEffect(() => {
     const token = Cookies.get(accessTokenCookieName);

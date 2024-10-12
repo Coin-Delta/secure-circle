@@ -43,18 +43,9 @@ function BusinessProfile() {
     <>
       <div className="grid grid-cols-1 gap-10 p-10 h-full">
         <div className="pt-14 border border-border p-10 flex justify-between rounded-3xl font-medium bg-white w-full min-h-[10%]">
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full h-full">
             <div className="flex justify-between w-full ">
-              <div className="flex items-center">
-                {data?.businessLogo && (
-                  <img
-                    src={data.businessLogo}
-                    alt="Business Logo"
-                    className="w-16 h-16 object-contain mr-4"
-                  />
-                )}
-                <h1 className="text-3xl text-black">Business Profile</h1>
-              </div>
+              <h1 className="text-3xl text-black">Business Profile</h1>
               <Button
                 variant="outline"
                 type="button"
@@ -70,55 +61,69 @@ function BusinessProfile() {
               </div>
             ) : (
               <>
-                <div className="flex w-full justify-between mt-10">
-                  <div className="flex flex-col">
-                    <Label className="text-xl">Business Name </Label>
-                    <h3 className="text-lg mt-1 font-medium">
-                      {data?.businessName || "-"}
-                    </h3>
+                <div className="grid grid-cols-3 gap-4 h-full">
+                  <div className="flex flex-col justify-evenly">
+                    <div className="flex flex-col">
+                      <Label className="text-xl">Business Name </Label>
+                      <h3 className="text-lg mt-1 font-medium">
+                        {data?.businessName || "-"}
+                      </h3>
+                    </div>
+
+                    <div className="flex flex-col mt-2">
+                      <Label className="text-xl">Business Verified </Label>
+                      <h3 className="text-lg mt-1 font-medium">
+                        {data?.isVerified ? "true" : "false"}
+                      </h3>
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <Label className="text-xl">Identification document</Label>
-                    <h3 className="text-lg mt-1 font-medium">
-                      {data?.files?.identification ? (
-                        <Button
-                          variant="outline"
-                          onClick={() =>
-                            handleDownload(data?.files?.identification)
-                          }
-                        >
-                          <DownloadPdf className="mr-2" />
-                          Download File
-                        </Button>
-                      ) : (
-                        "no document found"
-                      )}
-                    </h3>
+                  <div className="flex flex-col justify-evenly">
+                    <div className="flex flex-col">
+                      <Label className="text-xl">Identification document</Label>
+                      <h3 className="text-lg mt-1 font-medium">
+                        {data?.files?.identification ? (
+                          <Button
+                            variant="outline"
+                            onClick={() =>
+                              handleDownload(data?.files?.identification)
+                            }
+                          >
+                            <DownloadPdf className="mr-2" />
+                            Download File
+                          </Button>
+                        ) : (
+                          "no document found"
+                        )}
+                      </h3>
+                    </div>
+                    <div className="flex flex-col">
+                      <Label className="text-xl">Business License </Label>
+                      <h3 className="text-lg mt-1 font-medium">
+                        {data?.files?.businessLicense ? (
+                          <Button
+                            variant="outline"
+                            onClick={() =>
+                              handleDownload(data?.files?.businessLicense)
+                            }
+                          >
+                            <DownloadPdf className="mr-2" />
+                            Download File
+                          </Button>
+                        ) : (
+                          "no document found"
+                        )}
+                      </h3>
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <Label className="text-xl">Business License </Label>
-                    <h3 className="text-lg mt-1 font-medium">
-                      {data?.files?.businessLicense ? (
-                        <Button
-                          variant="outline"
-                          onClick={() =>
-                            handleDownload(data?.files?.identification)
-                          }
-                        >
-                          <DownloadPdf className="mr-2" />
-                          Download File
-                        </Button>
-                      ) : (
-                        "no document found"
-                      )}
-                    </h3>
+                  <div className="flex flex-col justify-evenly mt-5">
+                    {data?.businessLogo && (
+                      <img
+                        src={data.businessLogo}
+                        alt="Business Logo"
+                        className="w-full object-contain border-border border"
+                      />
+                    )}
                   </div>
-                </div>
-                <div className="flex flex-col mt-2">
-                  <Label className="text-xl">IsVerified </Label>
-                  <h3 className="text-lg mt-1 font-medium">
-                    {data?.isVerified ? "true" : "false"}
-                  </h3>
                 </div>
               </>
             )}

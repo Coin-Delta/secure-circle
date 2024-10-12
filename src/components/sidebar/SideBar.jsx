@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Coinlogo from "../../assets/images/dashboard/Coinlogo.jpg";
 import { LayoutDashboard, LockKeyhole, LogOut } from "lucide-react";
-import Cookies from "js-cookie";
-import { accessTokenCookieName } from "@/lib/constants";
+import { handleLogout } from "@/services/auth";
 
 function SideBar() {
   const [select, setSelect] = useState("dashboard");
@@ -20,16 +19,11 @@ function SideBar() {
     }
   }, [location]);
 
-  const handleLogout = () => {
-    Cookies.remove(accessTokenCookieName);
-    window.location.href = "/";
-  };
-
   return (
     <div className="w-full bg-[#fcfcfc] min-h-screen lg:block hidden">
       <div className="sticky top-0 w-full h-screen flex flex-col justify-between">
         <div>
-          <div className="bg-[#fcfcfc] min-h-[10vh] py-5 px-8 flex items-center">
+          <div className="bg-[#fcfcfc] min-h-[10vh] py-5 p-14 flex items-center">
             <Link to="/">
               <img
                 src={Coinlogo}
@@ -71,7 +65,7 @@ function SideBar() {
         </div>
         <div className="p-8">
           <button
-            onClick={handleLogout}
+            onClick={() => handleLogout()}
             className={`p-6 rounded-xl cursor-pointer w-full text-[#748297] hover:text-white hover:bg-primary flex items-center`}
           >
             <LogOut />
